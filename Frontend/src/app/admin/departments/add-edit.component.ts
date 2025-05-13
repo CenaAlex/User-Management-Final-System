@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { first } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 
-import { DepartmentService, AlertService, AccountService } from '@app/_services';
+import { DepartmentService, AlertService, AccountService, WorkflowService } from '@app/_services';
 
 @Component({ 
     templateUrl: 'add-edit.component.html',
@@ -29,7 +29,8 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private departmentService: DepartmentService,
         private alertService: AlertService,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private workflowService: WorkflowService
     ) {}
 
     ngOnInit() {
@@ -78,6 +79,10 @@ export class AddEditComponent implements OnInit {
         
         this.submitting = true;
         
+        // Get current user for the workflow entry
+        const currentUser = this.accountService.accountValue;
+        const userId = currentUser?.id;
+        
         // Create department save observable
         const saveDepartment = () => {
             return this.id
@@ -89,7 +94,54 @@ export class AddEditComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: department => {
+                    // Create a workflow entry for the department action
                     const action = this.id ? 'updated' : 'created';
+                    const departmentName = this.form.value.name;
+                    
+                    // Only log workflow if we have a userId (logged in)
+                    if (userId) {
+                        // Find any employee record linked to the current user
+                        // This is required because workflows are linked to employees
+                        this.workflowService.getAll()
+                            .pipe(first())
+                            .subscribe({
+                                next: workflows => {
+                                    // Look for any workflow related to the current user
+                                    const userWorkflow = workflows.find(w => 
+                                        w.employee?.account?.id === userId
+                                    );
+                                    
+                                    if (userWorkflow?.employee?.id) {
+                                        // Create workflow entry
+                                        const workflowData = {
+                                            employeeId: userWorkflow.employee.id,
+                                            type: 'Department Transfer', // Using this type since it's related to departments
+                                            description: `Department "${departmentName}" ${action}`,
+                                            status: 'Completed',
+                                            previousValue: this.id ? 'Updated Department' : 'New Department',
+                                            newValue: departmentName,
+                                            createdBy: userId,
+                                            updatedBy: userId
+                                        };
+                                        
+                                        this.workflowService.create(workflowData)
+                                            .pipe(first())
+                                            .subscribe({
+                                                next: () => {
+                                                    // Success message is shown below even if workflow fails
+                                                },
+                                                error: error => {
+                                                    console.error('Error creating workflow:', error);
+                                                }
+                                            });
+                                    }
+                                },
+                                error: error => {
+                                    console.error('Error finding employee:', error);
+                                }
+                            });
+                    }
+                    
                     const message = `Department ${action} successfully`;
                     this.alertService.success(message, { keepAfterRouteChange: true });
                     this.router.navigateByUrl('/admin/departments');

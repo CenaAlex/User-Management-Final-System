@@ -48,6 +48,16 @@ async function create(params) {
     // Create employee
     const employee = await db.Employee.create(params);
     
+    // Create workflow entry for onboarding
+    await db.Workflow.create({
+        employeeId: employee.id,
+        type: 'Onboarding',
+        description: `Employee ${params.employeeId} onboarded`,
+        status: 'Completed',
+        createdBy: params.createdBy || 1, // Default to admin if not specified
+        updatedBy: params.createdBy || 1
+    });
+    
     return await getEmployee(employee.id);
 }
 
@@ -69,11 +79,24 @@ async function _delete(id) {
 
 async function transferDepartment(id, params) {
     const employee = await getEmployee(id);
+    const oldDepartmentId = employee.departmentId;
     
     // Update employee department
     employee.departmentId = params.departmentId;
     employee.updated = new Date();
     await employee.save();
+    
+    // Create workflow entry for department transfer
+    await db.Workflow.create({
+        employeeId: employee.id,
+        type: 'Department Transfer',
+        description: `Employee transferred to new department`,
+        status: 'Completed',
+        previousValue: oldDepartmentId ? oldDepartmentId.toString() : 'None',
+        newValue: params.departmentId.toString(),
+        createdBy: params.updatedBy || 1, // Default to admin if not specified
+        updatedBy: params.updatedBy || 1
+    });
     
     return await getEmployee(id);
 }

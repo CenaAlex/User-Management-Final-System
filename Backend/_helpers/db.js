@@ -26,6 +26,7 @@ async function initialize() {
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Employee = require('../employees/employee.model')(sequelize);
     db.Department = require('../departments/department.model')(sequelize);
+    db.Workflow = require('../workflows/workflow.model')(sequelize);
 
     // define relationships
     // Account - Employee (one-to-one)
@@ -39,6 +40,10 @@ async function initialize() {
     // Account - RefreshToken (one-to-many)
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
+
+    // Workflow relationships
+    db.Employee.hasMany(db.Workflow, { foreignKey: 'employeeId', as: 'workflows' });
+    db.Workflow.belongsTo(db.Employee, { foreignKey: 'employeeId', as: 'employee' });
 
     // sync all models with database
     await sequelize.sync({ alter: true });
