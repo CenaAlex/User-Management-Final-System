@@ -218,6 +218,16 @@ async function create(params) {
             createdBy: params.createdBy || 1
         }, { transaction });
 
+        // Create workflow record
+        await db.Workflow.create({
+            employeeId: employee.id,
+            type: 'AccountCreation',
+            description: `New account created for ${account.firstName} ${account.lastName}`,
+            status: 'Completed',
+            createdBy: params.createdBy || 1,
+            updatedBy: params.createdBy || 1
+        }, { transaction });
+
         // Commit transaction
         await transaction.commit();
 
@@ -265,6 +275,63 @@ async function update(id, params) {
         await syncEmployeeStatus(account.id, account.status);
     }
 
+    // Create workflow records for profile updates
+    const changes = [];
+    if (oldValues.title !== account.title) {
+        changes.push({
+            field: 'title',
+            oldValue: oldValues.title,
+            newValue: account.title
+        });
+    }
+    if (oldValues.firstName !== account.firstName) {
+        changes.push({
+            field: 'firstName',
+            oldValue: oldValues.firstName,
+            newValue: account.firstName
+        });
+    }
+    if (oldValues.lastName !== account.lastName) {
+        changes.push({
+            field: 'lastName',
+            oldValue: oldValues.lastName,
+            newValue: account.lastName
+        });
+    }
+    if (oldValues.email !== account.email) {
+        changes.push({
+            field: 'email',
+            oldValue: oldValues.email,
+            newValue: account.email
+        });
+    }
+    if (oldValues.status !== account.status) {
+        changes.push({
+            field: 'status',
+            oldValue: oldValues.status,
+            newValue: account.status
+        });
+    }
+
+    // Create a workflow entry for each change
+    try {
+        for (const change of changes) {
+            await db.Workflow.create({
+                employeeId: account.id,
+                type: 'ProfileUpdate',
+                description: `Updated ${change.field}`,
+                status: 'Completed',
+                previousValue: change.oldValue,
+                newValue: change.newValue,
+                createdBy: params.updatedBy || 1,
+                updatedBy: params.updatedBy || 1
+            });
+        }
+    } catch (error) {
+        console.error('Error creating workflow records:', error);
+        // Continue despite workflow errors
+    }
+
     return basicDetails(account);
 }
 
@@ -281,6 +348,23 @@ async function updateStatus(id, status) {
         account.status = normalizedStatus;
         account.updated = Date.now();
         await account.save();
+
+        // Create workflow record for status change
+        try {
+            await db.Workflow.create({
+                employeeId: account.id,
+                type: 'StatusUpdate',
+                description: `Updated account status from ${oldStatus} to ${normalizedStatus}`,
+                status: 'Completed',
+                previousValue: oldStatus,
+                newValue: normalizedStatus,
+                createdBy: account.id,
+                updatedBy: account.id
+            });
+        } catch (error) {
+            // Log error but don't fail the status update
+            console.error('Error creating workflow record:', error);
+        }
         
         // Sync employee status with account status
         await syncEmployeeStatus(account.id, normalizedStatus);
@@ -415,6 +499,18 @@ async function syncEmployeeStatus(accountId, status) {
                 employee.status = employeeStatus;
                 employee.updated = Date.now();
                 await employee.save();
+                
+                // Create workflow record for the employee status change
+                await db.Workflow.create({
+                    employeeId: employee.id,
+                    type: 'Status Change',
+                    description: `Employee status updated to ${employeeStatus}`,
+                    status: 'Completed',
+                    previousValue: employee.status,
+                    newValue: employeeStatus,
+                    createdBy: accountId,
+                    updatedBy: accountId
+                });
                 
                 console.log(`Synced employee #${employee.id} status to ${employeeStatus}`);
             }

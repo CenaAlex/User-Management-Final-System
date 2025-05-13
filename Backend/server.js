@@ -18,6 +18,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 app.use('/accounts', require('./accounts/accounts.controller'));
 app.use('/employees', require('./employees/employees.controller'));
 app.use('/departments', require('./departments/departments.controller'));
+app.use('/workflows', require('./workflows/workflows.controller'));
 
 // swagger docs route
 app.use('/api-docs', require('./_helpers/swagger'));

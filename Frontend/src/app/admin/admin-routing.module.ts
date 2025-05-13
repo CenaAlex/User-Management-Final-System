@@ -7,16 +7,18 @@ import { LayoutComponent } from './layout.component';
 const accountsModule = () => import('./accounts/accounts.module').then(x => x.AccountsModule);
 const employeesModule = () => import('./employees/employees.module').then(x => x.EmployeesModule);
 const departmentsModule = () => import('./departments/departments.module').then(x => x.DepartmentsModule);
+const workflowsModule = () => import('./workflows/workflows.module').then(x => x.WorkflowsModule);
 
 const routes: Routes = [
     { path: '', component: SubNavComponent, outlet: 'subnav' },
     {
         path: '', component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'accounts', pathMatch: 'full' },
+            { path: '', redirectTo: 'workflows', pathMatch: 'full' },
             { path: 'accounts', loadChildren: accountsModule },
             { path: 'employees', loadChildren: employeesModule },
-            { path: 'departments', loadChildren: departmentsModule }
+            { path: 'departments', loadChildren: departmentsModule },
+            { path: 'workflows', loadChildren: workflowsModule },
         ]
     }
 ];
