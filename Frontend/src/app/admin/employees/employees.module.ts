@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { ListComponent } from './list.component';
 import { AddEditComponent } from './add-edit.component';
+import { TransferComponent } from './transfer.component';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { AddEditComponent } from './add-edit.component';
         ReactiveFormsModule,
         EmployeesRoutingModule,
         ListComponent,
-        AddEditComponent
+        AddEditComponent,
+        TransferComponent
     ]
 })
 export class EmployeesModule { } 

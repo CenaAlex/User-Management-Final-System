@@ -6,13 +6,15 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    transferDepartment
 };
 
 async function getAll() {
     const employees = await db.Employee.findAll({
         include: [
-            { model: db.Account, as: 'account' }
+            { model: db.Account, as: 'account' },
+            { model: db.Department, as: 'department' }
         ]
     });
     return employees;
@@ -65,11 +67,23 @@ async function _delete(id) {
     await employee.destroy();
 }
 
+async function transferDepartment(id, params) {
+    const employee = await getEmployee(id);
+    
+    // Update employee department
+    employee.departmentId = params.departmentId;
+    employee.updated = new Date();
+    await employee.save();
+    
+    return await getEmployee(id);
+}
+
 // Helper functions
 async function getEmployee(id) {
     const employee = await db.Employee.findByPk(id, {
         include: [
-            { model: db.Account, as: 'account' }
+            { model: db.Account, as: 'account' },
+            { model: db.Department, as: 'department' }
         ]
     });
     if (!employee) throw 'Employee not found';

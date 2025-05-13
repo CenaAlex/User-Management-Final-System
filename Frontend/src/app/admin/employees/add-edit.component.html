@@ -25,14 +25,23 @@
             </div>
         </div>
         <div class="mb-3 col">
+            <label class="form-label">Department</label>
+            <select formControlName="departmentId" class="form-control">
+                <option [ngValue]="null">-- Select Department --</option>
+                <option *ngFor="let department of departments" [ngValue]="department.id">
+                    {{department.name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-3 col">
             <label class="form-label">Hire Date</label>
             <input type="date" formControlName="hireDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.hireDate.errors }" />
             <div *ngIf="submitted && f.hireDate.errors" class="invalid-feedback">
                 <div *ngIf="f.hireDate.errors.required">Hire date is required</div>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="mb-3 col">
             <label class="form-label">Status</label>
             <select formControlName="status" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.status.errors }">
@@ -43,9 +52,6 @@
             <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
                 <div *ngIf="f.status.errors.required">Status is required</div>
             </div>
-        </div>
-        <div class="mb-3 col">
-            <!-- Empty column for balance in the form layout -->
         </div>
     </div>
     <div class="mb-3">

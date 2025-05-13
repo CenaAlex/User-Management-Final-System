@@ -25,11 +25,16 @@ async function initialize() {
     db.Account = require('../accounts/account.model')(sequelize);
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Employee = require('../employees/employee.model')(sequelize);
+    db.Department = require('../departments/department.model')(sequelize);
 
     // define relationships
     // Account - Employee (one-to-one)
     db.Account.hasOne(db.Employee, { foreignKey: 'accountId', as: 'employee' });
     db.Employee.belongsTo(db.Account, { foreignKey: 'accountId', as: 'account' });
+
+    // Department - Employee (one-to-many)
+    db.Department.hasMany(db.Employee, { foreignKey: 'departmentId', as: 'employees' });
+    db.Employee.belongsTo(db.Department, { foreignKey: 'departmentId', as: 'department' });
 
     // Account - RefreshToken (one-to-many)
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
