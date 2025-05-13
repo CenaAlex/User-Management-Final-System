@@ -27,6 +27,8 @@ async function initialize() {
     db.Employee = require('../employees/employee.model')(sequelize);
     db.Department = require('../departments/department.model')(sequelize);
     db.Workflow = require('../workflows/workflow.model')(sequelize);
+    db.Request = require('../requests/request.model')(sequelize);
+    db.RequestItem = require('../requests/request-item.model')(sequelize);
 
     // define relationships
     // Account - Employee (one-to-one)
@@ -44,6 +46,13 @@ async function initialize() {
     // Workflow relationships
     db.Employee.hasMany(db.Workflow, { foreignKey: 'employeeId', as: 'workflows' });
     db.Workflow.belongsTo(db.Employee, { foreignKey: 'employeeId', as: 'employee' });
+
+    // Request relationships
+    db.Account.hasMany(db.Request, { foreignKey: 'accountId', as: 'requests' });
+    db.Request.belongsTo(db.Account, { foreignKey: 'accountId', as: 'account' });
+    
+    db.Request.hasMany(db.RequestItem, { foreignKey: 'requestId', as: 'items', onDelete: 'CASCADE' });
+    db.RequestItem.belongsTo(db.Request, { foreignKey: 'requestId', as: 'request' });
 
     // sync all models with database
     await sequelize.sync({ alter: true });

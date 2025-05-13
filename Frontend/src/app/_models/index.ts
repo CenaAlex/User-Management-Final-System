@@ -4,3 +4,5 @@ export * from './role';
 export * from './employee';
 export * from './department';
 export * from './workflow';
+export * from './request';
+export * from './request-item';

@@ -1,6 +1,6 @@
 # Employee Management System
 
-A full-stack application for user authentication and account management.
+A full-stack application for user authentication, account management, employee management with dynamic departments, transactional workflows, and employee requests.
 
 ## Technologies
 
@@ -15,6 +15,22 @@ A full-stack application for user authentication and account management.
 - Authentication: JWT-based authentication with access and refresh tokens.
 - Authorization: Role-based access control (Admin and User roles).
 - Account Management: Users can view and update their profiles, change passwords, and manage refresh tokens.
+
+### Employees
+- Employee Management: Create, read, update, and delete (CRUD) employees with details like Employee ID, Account assignment, position, Department, hire date, and status.
+- Department Transfer: Admins can transfer employees between departments, creating a workflow entry for tracking.
+
+### Departments
+- Department Management: CRUD operations for departments with fields for name and description.
+- Employee Assignment: Departments are linked to employees, showing employee counts per department.
+
+### Workflows
+- Transactional Workflows: Create workflows for employee-related actions (e.g., onboarding, department changes, employee requests).
+- Status Management: Update workflow status (e.g., Pending, Approved, Rejected) with detailed tracking.
+
+### Requests
+- Employee Requests: Employees can create requests (e.g., equipment, leave, resources) with a header (type, status) and a list of items (e.g., name, quantity).
+- Request Management: Admins can view, update, and delete requests. Users can view their own requests.
 
 ## Setup and Installation
 
