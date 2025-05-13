@@ -7,6 +7,7 @@
                 <th>Employee ID</th>
                 <th>Name</th>
                 <th>Position</th>
+                <th>Department</th>
                 <th>Hire Date</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -17,10 +18,12 @@
                 <td>{{employee.employeeId}}</td>
                 <td>{{employee.account?.firstName}} {{employee.account?.lastName}}</td>
                 <td>{{employee.position}}</td>
+                <td>{{employee.department?.name || 'Not Assigned'}}</td>
                 <td>{{employee.hireDate ? (employee.hireDate | date:'mediumDate') : 'Not Set'}}</td>
                 <td>{{employee.status}}</td>
                 <td style="white-space: nowrap">
                     <a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary me-1">Edit</a>
+                    <a routerLink="transfer/{{employee.id}}" class="btn btn-sm btn-info me-1">Transfer</a>
                     <button (click)="deleteEmployee(employee.id)" class="btn btn-sm btn-danger btn-delete-employee" [disabled]="employee.isDeleting">
                         <span *ngIf="employee.isDeleting" class="spinner-border spinner-border-sm"></span>
                         <span *ngIf="!employee.isDeleting">Delete</span>
@@ -28,12 +31,12 @@
                 </td>
             </tr>
             <tr *ngIf="!employees">
-                <td colspan="6" class="text-center">
+                <td colspan="7" class="text-center">
                     <span class="spinner-border spinner-border-lg align-center"></span>
                 </td>
             </tr>
             <tr *ngIf="employees && !employees.length">
-                <td colspan="6" class="text-center">
+                <td colspan="7" class="text-center">
                     <div class="p-2">No Employees To Display</div>
                 </td>
             </tr>

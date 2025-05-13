@@ -265,14 +265,6 @@ async function update(id, params) {
         await syncEmployeeStatus(account.id, account.status);
     }
 
-    // Create a workflow entry for each change
-    try {
-        // Removed workflow creation
-    } catch (error) {
-        console.error('Error creating workflow records:', error);
-        // Continue despite workflow errors
-    }
-
     return basicDetails(account);
 }
 
@@ -289,17 +281,9 @@ async function updateStatus(id, status) {
         account.status = normalizedStatus;
         account.updated = Date.now();
         await account.save();
-
+        
         // Sync employee status with account status
         await syncEmployeeStatus(account.id, normalizedStatus);
-    }
-
-    // Create workflow record for status change
-    try {
-        // Removed workflow creation
-    } catch (error) {
-        // Log error but don't fail the status update
-        console.error('Error creating workflow record:', error);
     }
 
     // Always return the account details, even if no change was made

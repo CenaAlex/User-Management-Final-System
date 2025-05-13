@@ -34,4 +34,8 @@ export class EmployeeService {
     delete(id: string): Observable<void> {
         return this.http.delete<void>(`${baseUrl}/${id}`);
     }
+
+    transferDepartment(id: string, departmentId: string, updatedBy: string): Observable<Employee> {
+        return this.http.put<Employee>(`${baseUrl}/${id}/transfer`, { departmentId, updatedBy });
+    }
 } 

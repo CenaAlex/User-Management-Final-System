@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { first } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 
-import { EmployeeService, AccountService, AlertService } from '@app/_services';
-import { Account } from '@app/_models';
+import { EmployeeService, AccountService, AlertService, DepartmentService } from '@app/_services';
+import { Account, Department } from '@app/_models';
 
 @Component({ 
     templateUrl: 'add-edit.component.html',
@@ -24,6 +24,7 @@ export class AddEditComponent implements OnInit {
     submitting = false;
     submitted = false;
     accounts: Account[] = [];
+    departments: Department[] = [];
     statuses = ['Active', 'Inactive', 'On Leave', 'Terminated'];
 
     constructor(
@@ -32,6 +33,7 @@ export class AddEditComponent implements OnInit {
         private router: Router,
         private employeeService: EmployeeService,
         private accountService: AccountService,
+        private departmentService: DepartmentService,
         private alertService: AlertService
     ) {}
 
@@ -41,6 +43,7 @@ export class AddEditComponent implements OnInit {
         this.form = this.formBuilder.group({
             employeeId: [''],
             accountId: [null],
+            departmentId: [null],
             position: ['', Validators.required],
             hireDate: [new Date().toISOString().split('T')[0], Validators.required],
             status: ['Active', Validators.required]
@@ -68,7 +71,7 @@ export class AddEditComponent implements OnInit {
                 });
         }
         
-        // load accounts
+        // load accounts and departments
         this.accountService.getAll()
             .pipe(first())
             .subscribe({
@@ -79,6 +82,19 @@ export class AddEditComponent implements OnInit {
                 error: (error) => {
                     console.error('Error loading accounts:', error);
                     this.alertService.error('Error loading accounts');
+                }
+            });
+            
+        this.departmentService.getAll()
+            .pipe(first())
+            .subscribe({
+                next: (departments) => {
+                    this.departments = departments;
+                    console.log('Loaded departments:', departments);
+                },
+                error: (error) => {
+                    console.error('Error loading departments:', error);
+                    this.alertService.error('Error loading departments');
                 }
             });
     }
@@ -118,9 +134,13 @@ export class AddEditComponent implements OnInit {
         // Prepare form data
         const formData = { ...this.form.value };
         
-        // Convert accountId to number if it's a string
+        // Convert accountId and departmentId to number if they're strings
         if (formData.accountId && typeof formData.accountId === 'string') {
             formData.accountId = parseInt(formData.accountId, 10);
+        }
+        
+        if (formData.departmentId && typeof formData.departmentId === 'string') {
+            formData.departmentId = parseInt(formData.departmentId, 10);
         }
         
         console.log('Submitting employee data:', formData);
