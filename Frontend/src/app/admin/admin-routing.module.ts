@@ -5,6 +5,7 @@ import { SubNavComponent } from './subnav.component';
 import { LayoutComponent } from './layout.component';
 
 const accountsModule = () => import('./accounts/accounts.module').then(x => x.AccountsModule);
+const employeesModule = () => import('./employees/employees.module').then(x => x.EmployeesModule);
 
 const routes: Routes = [
     { path: '', component: SubNavComponent, outlet: 'subnav' },
@@ -12,7 +13,8 @@ const routes: Routes = [
         path: '', component: LayoutComponent,
         children: [
             { path: '', redirectTo: 'accounts', pathMatch: 'full' },
-            { path: 'accounts', loadChildren: accountsModule }
+            { path: 'accounts', loadChildren: accountsModule },
+            { path: 'employees', loadChildren: employeesModule }
         ]
     }
 ];

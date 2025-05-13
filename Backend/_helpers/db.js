@@ -24,6 +24,12 @@ async function initialize() {
     // init models and add them to the exported db object
     db.Account = require('../accounts/account.model')(sequelize);
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
+    db.Employee = require('../employees/employee.model')(sequelize);
+
+    // define relationships
+    // Account - Employee (one-to-one)
+    db.Account.hasOne(db.Employee, { foreignKey: 'accountId', as: 'employee' });
+    db.Employee.belongsTo(db.Account, { foreignKey: 'accountId', as: 'account' });
 
     // Account - RefreshToken (one-to-many)
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
