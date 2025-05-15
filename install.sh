@@ -37,9 +37,15 @@ if [ -f "package-lock.json" ]; then
   rm -f package-lock.json
 fi
 
-# Install with production flag to skip devDependencies
-echo "==> Installing dependencies with --legacy-peer-deps and --production=false..."
-npm install --legacy-peer-deps --production=false --no-optional
+# Install with forced option to ignore any peer dependency errors
+echo "==> Installing dependencies with additional flags to ignore peer dependency issues..."
+npm install --legacy-peer-deps --production=false --no-optional --force --no-package-lock --ignore-scripts
+
+# If the above fails, try without the force flag
+if [ $? -ne 0 ]; then
+  echo "==> First installation attempt failed, trying alternate approach..."
+  npm install --legacy-peer-deps --production=false --no-optional --no-package-lock
+fi
 
 # Debug: Check what was installed
 echo "==> Installed packages:"
