@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Root package for User Management System",
   "scripts": {
+    "preinstall": "npm config set legacy-peer-deps true",
     "install-frontend": "cd Frontend && npm install --legacy-peer-deps",
     "build-frontend": "cd Frontend && npm run build",
     "install-backend": "cd Backend && npm install",
-    "build": "npm run install-frontend && npm run build-frontend",
+    "build": "cd Frontend && npm install --legacy-peer-deps && npm run build",
     "start": "cd Backend && npm start"
   },
   "engines": {
