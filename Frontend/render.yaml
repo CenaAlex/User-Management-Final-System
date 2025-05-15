@@ -2,7 +2,7 @@ services:
   - type: web
     name: user-management-system
     env: static
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --legacy-peer-deps && npm run build
     staticPublishPath: ./dist/user-management-system/browser
     pullRequestPreviewsEnabled: true
     headers:
