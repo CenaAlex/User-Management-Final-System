@@ -9,8 +9,19 @@ echo "==> Starting deployment build process..."
 echo "==> Setting legacy-peer-deps configuration..."
 npm config set legacy-peer-deps true
 
+# Debug: Show current npm configuration
+echo "==> Current npm configuration:"
+npm config list
+
 # Go to Frontend directory
 cd Frontend
+
+# Print current directory
+echo "==> Current working directory: $(pwd)"
+
+# List files to debug
+echo "==> Listing package.json content:"
+cat package.json
 
 # Clean npm cache
 echo "==> Cleaning npm cache..."
@@ -26,9 +37,13 @@ if [ -f "package-lock.json" ]; then
   rm -f package-lock.json
 fi
 
-# Install with specific versions for problematic packages
-echo "==> Installing dependencies with legacy-peer-deps..."
-npm install --legacy-peer-deps
+# Install with production flag to skip devDependencies
+echo "==> Installing dependencies with --legacy-peer-deps and --production=false..."
+npm install --legacy-peer-deps --production=false --no-optional
+
+# Debug: Check what was installed
+echo "==> Installed packages:"
+npm list --depth=0
 
 # Build the Angular application
 echo "==> Building Angular application..."
