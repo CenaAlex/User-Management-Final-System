@@ -1,36 +1,39 @@
 {
   "name": "user-management-system",
   "version": "1.0.0",
-  "description": "User-Management-Final-System",
+  "description": "User Management System",
   "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "keywords": [],
-  "author": "Shekainah Gaceta",
+  "author": "Ivan Nellas",
   "license": "ISC",
   "dependencies": {
-    "@angular/common": "^17.2.0",
-    "@angular/compiler": "^17.2.0",
-    "@angular/core": "^17.2.0",
-    "@angular/forms": "^17.2.0",
-    "@angular/platform-browser": "^17.2.0",
-    "@angular/platform-browser-dynamic": "^17.2.0",
-    "@angular/router": "^17.2.0",
+    "@angular/common": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/router": "^17.3.0",
     "firebase": "^10.8.0",
-    "rxjs": "^7.8.2",
-    "zone.js": "^0.14.4"
+    "rxjs": "^7.8.1",
+    "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.2.0",
-    "@angular/cli": "^17.2.0",
-    "@angular/compiler-cli": "^17.2.0",
-    "angular-eslint": "^17.2.0",
-    "typescript": "~5.3.0"
+    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "angular-eslint": "^17.3.0",
+    "typescript": "~5.3.3"
+  },
+  "engines": {
+    "node": ">=18.13.0"
   }
 }
