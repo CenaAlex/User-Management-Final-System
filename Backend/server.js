@@ -11,8 +11,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// allow cors requests from any origin and with credentials
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+// CORS configuration
+const corsOptions = {
+    origin: ['https://grouph-user-management-s-476a4.web.app', 'http://localhost:4200'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+// apply CORS configuration
+app.use(cors(corsOptions));
 
 // api routes
 app.use('/accounts', require('./accounts/accounts.controller'));
