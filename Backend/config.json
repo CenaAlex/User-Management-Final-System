@@ -6,11 +6,7 @@
         "password": "9T2Z5$3UKkgSYzE",
         "database": "u875409848_cena"
     },
-<<<<<<< HEAD
     "secret": "your-secret-key",
-=======
-    "secret": "5f3c8d2e-9b7a-4f16-8e2d-1c6a9b3d4f5e",
->>>>>>> a55453d6c3f5f615fd22070a938d8ea8b27ebd9f
     "emailFrom": "info@signup-verification-api.com",
     "smtpOptions": {
         "host": "smtp.ethereal.email",
