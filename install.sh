@@ -1,13 +1,37 @@
 #!/bin/bash
 
-# Set legacy-peer-deps before installation
+# Exit on error
+set -e
+
+echo "==> Starting deployment build process..."
+
+# Set legacy-peer-deps before installation globally
+echo "==> Setting legacy-peer-deps configuration..."
 npm config set legacy-peer-deps true
 
-# Explicitly remove any existing node_modules to ensure clean install
-if [ -d "Frontend/node_modules" ]; then
-  echo "Removing existing node_modules for clean install"
-  rm -rf Frontend/node_modules
+# Go to Frontend directory
+cd Frontend
+
+# Clean npm cache
+echo "==> Cleaning npm cache..."
+npm cache clean --force
+
+# Remove existing node_modules and lock files to ensure a clean install
+echo "==> Removing existing node_modules and lock files for clean install..."
+if [ -d "node_modules" ]; then
+  rm -rf node_modules
 fi
 
-# Install all dependencies with legacy-peer-deps flag
-npm install --legacy-peer-deps && npm run build 
+if [ -f "package-lock.json" ]; then
+  rm -f package-lock.json
+fi
+
+# Install with specific versions for problematic packages
+echo "==> Installing dependencies with legacy-peer-deps..."
+npm install --legacy-peer-deps
+
+# Build the Angular application
+echo "==> Building Angular application..."
+npm run build
+
+echo "==> Build process completed successfully!" 
