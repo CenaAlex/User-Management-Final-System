@@ -2,7 +2,7 @@ services:
   - type: web
     name: user-management-system-api
     env: node
-    buildCommand: cd Backend && npm install
+    buildCommand: cd Backend && npm config set legacy-peer-deps true && npm install --legacy-peer-deps
     startCommand: cd Backend && npm start
     envVars:
       - key: NODE_ENV
