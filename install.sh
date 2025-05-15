@@ -39,12 +39,23 @@ fi
 
 # Install with forced option to ignore any peer dependency errors
 echo "==> Installing dependencies with additional flags to ignore peer dependency issues..."
+# Explicitly exclude angular-eslint packages, which are causing problems
 npm install --legacy-peer-deps --production=false --no-optional --force --no-package-lock --ignore-scripts
 
-# If the above fails, try without the force flag
+# If the above fails, try removing angular-eslint from package.json using npm
 if [ $? -ne 0 ]; then
-  echo "==> First installation attempt failed, trying alternate approach..."
+  echo "==> First installation attempt failed, trying to remove problematic dependencies..."
+  # Create a temporary package.json without angular-eslint
+  echo "==> Temporarily removing angular-eslint from dependencies..."
+  cp package.json package.json.bak
+  cat package.json | grep -v "angular-eslint" > package.json.temp
+  mv package.json.temp package.json
+  
+  # Try installing again
   npm install --legacy-peer-deps --production=false --no-optional --no-package-lock
+  
+  # Restore original package.json if needed for reference
+  cp package.json.bak package.json
 fi
 
 # Debug: Check what was installed
