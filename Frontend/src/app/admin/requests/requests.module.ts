@@ -13,9 +13,10 @@ import { AddEditComponent as RequestsAddEditComponent } from './add-edit.compone
         ReactiveFormsModule,
         RequestsRoutingModule,
         RequestsListComponent,
-        RequestsDetailsComponent,
         RequestsAddEditComponent
     ],
-    declarations: []
+    declarations: [
+        RequestsDetailsComponent
+    ]
 })
 export class RequestsModule { } 
