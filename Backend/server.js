@@ -14,7 +14,7 @@ app.use(cookieParser());
 // CORS configuration
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production'
-        ? ['https://your-frontend-url.onrender.com', 'https://grouph-user-management-s-476a4.web.app']
+        ? ['https://user-management-system.onrender.com', 'https://user-management-system-api.onrender.com', 'https://grouph-user-management-s-476a4.web.app']
         : ['http://localhost:3000', 'http://localhost:4200'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
@@ -39,5 +39,5 @@ app.use('/api-docs', require('./_helpers/swagger'));
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 10000) : 4000;
 app.listen(port, () => console.log('Server listening on port ' + port));
