@@ -1,44 +1,39 @@
 {
-  "name": "node-mysql-signup-verification-api",
+  "name": "user-management-system",
   "version": "1.0.0",
-  "description": "NodeJS and MySQL API for Email Sign Up with Verification, Authentication & Forgot Password",
-  "license": "MIT",
+  "description": "User Management System",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "nodemon ./server.js"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-jwt": "^8.5.1",
-    "joi": "^17.2.1",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.14.0",
-    "nodemailer": "^6.4.11",
-    "rootpath": "^0.1.2",
-    "sequelize": "^6.3.4",
-    "swagger-ui-express": "^4.1.4",
-    "uuid": "^8.3.2",
-    "yamljs": "^0.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.3"
-  },
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abaoski/user-management-system.git"
+    "ng": "ng",
+    "start": "ng serve --open",
+    "build": "npm install --legacy-peer-deps && ng build --configuration production",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "keywords": [],
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/abaoski/user-management-system/issues"
+  "author": "Ivan Nellas",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/common": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/platform-browser-dynamic": "^17.3.0",
+    "@angular/router": "^17.3.0",
+    "firebase": "^10.8.0",
+    "rxjs": "^7.8.1",
+    "zone.js": "~0.14.3"
   },
-  "homepage": "https://github.com/abaoski/user-management-system#readme"
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "angular-eslint": "^17.3.0",
+    "typescript": "~5.3.3"
+  },
+  "engines": {
+    "node": ">=18.13.0"
+  }
 }
