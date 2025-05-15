@@ -13,9 +13,10 @@ import { AddEditComponent as WorkflowsAddEditComponent } from './add-edit.compon
         ReactiveFormsModule,
         WorkflowsRoutingModule,
         WorkflowsListComponent,
-        WorkflowsDetailsComponent,
-        WorkflowsAddEditComponent
+        WorkflowsDetailsComponent
     ],
-    declarations: []
+    declarations: [
+        WorkflowsAddEditComponent
+    ]
 })
 export class WorkflowsModule { } 
