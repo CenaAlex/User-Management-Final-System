@@ -4,6 +4,7 @@
   "description": "User Management System",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm config set legacy-peer-deps true",
     "ng": "ng",
     "start": "ng serve --open",
     "build": "ng build --configuration production",
@@ -27,7 +28,7 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.0",
+    "@angular-devkit/build-angular": "17.3.17",
     "@angular/cli": "^17.3.0",
     "@angular/compiler-cli": "^17.3.0",
     "angular-eslint": "^17.3.0",
