@@ -31,7 +31,12 @@
     "@angular-devkit/build-angular": "17.3.17",
     "@angular/cli": "^17.3.0",
     "@angular/compiler-cli": "^17.3.0",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "@angular-eslint/builder": null,
+    "@angular-eslint/eslint-plugin": null,
+    "@angular-eslint/eslint-plugin-template": null,
+    "@angular-eslint/schematics": null,
+    "@angular-eslint/template-parser": null
   },
   "engines": {
     "node": ">=18.13.0"
