@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://grouph-user-management-system.onrender.com',
+    apiUrl: 'https://user-management-system-api.onrender.com',
     useFakeBackend: false,
     firebase: {
         apiKey: "AIzaSyBNjd67o9UE6SFtk02Jj_CjBE4nXr7W7gs",
