@@ -12,12 +12,18 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // CORS configuration
-app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? ['https://your-frontend-url.onrender.com']
-        : 'http://localhost:3000',
-    credentials: true
-}));
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production'
+        ? ['https://your-frontend-url.onrender.com', 'https://grouph-user-management-s-476a4.web.app']
+        : ['http://localhost:3000', 'http://localhost:4200'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+// apply CORS configuration
+app.use(cors(corsOptions));
 
 // api routes
 app.use('/accounts', require('./accounts/accounts.controller'));
