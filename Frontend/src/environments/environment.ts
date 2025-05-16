@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:4000',
+    apiUrl: 'https://user-management-final-system.onrender.com',
     useFakeBackend: false  // Set to false to use real backend, true to use fake backend
 };
 
