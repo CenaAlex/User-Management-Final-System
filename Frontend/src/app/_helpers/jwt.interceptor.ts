@@ -15,21 +15,9 @@ export class JwtInterceptor implements HttpInterceptor {
         const isLoggedIn = account && account.jwtToken;
         const isApiUrl = request.url.startsWith(environment.apiUrl);
         
-        // Clone the request with credentials and common headers
-        request = request.clone({
-            withCredentials: true,
-            setHeaders: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
-
-        // Add authorization header if logged in and requesting API
         if (isLoggedIn && isApiUrl) {
             request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${account.jwtToken}`
-                }
+                setHeaders: { Authorization: `Bearer ${account.jwtToken}` }
             });
         }
 
