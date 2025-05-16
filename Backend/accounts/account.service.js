@@ -23,7 +23,8 @@ module.exports = {
     create,
     update,
     updateStatus,
-    delete: _delete
+    delete: _delete,
+    deleteAllNonAdminUsers
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -374,6 +375,46 @@ async function updateStatus(id, status) {
 async function _delete(id) {
     const account = await getAccount(id);
     await account.destroy();
+}
+
+async function deleteAllNonAdminUsers() {
+    try {
+        // Find all non-admin accounts
+        const nonAdminAccounts = await db.Account.findAll({
+            where: {
+                role: { [Op.ne]: Role.Admin }
+            }
+        });
+
+        // Delete associated records and accounts
+        for (const account of nonAdminAccounts) {
+            // Delete associated employee record
+            await db.Employee.destroy({
+                where: { accountId: account.id }
+            });
+
+            // Delete associated workflow records
+            await db.Workflow.destroy({
+                where: { employeeId: account.id }
+            });
+
+            // Delete associated refresh tokens
+            await db.RefreshToken.destroy({
+                where: { accountId: account.id }
+            });
+
+            // Delete the account
+            await account.destroy();
+        }
+
+        return { 
+            message: `Successfully deleted ${nonAdminAccounts.length} non-admin users`,
+            deletedCount: nonAdminAccounts.length
+        };
+    } catch (error) {
+        console.error('Error deleting non-admin users:', error);
+        throw 'Failed to delete non-admin users';
+    }
 }
 
 // helper functions

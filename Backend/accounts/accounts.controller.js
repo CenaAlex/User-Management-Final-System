@@ -22,6 +22,7 @@ router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.put('/:id/update-status', authorize(), updateStatusSchema, updateStatus);
 router.delete('/:id', authorize(), _delete);
+router.delete('/delete-all/non-admin', authorize(Role.Admin), deleteAllNonAdmin);
 module.exports = router;
 
 function authenticateSchema(req, res, next) {
@@ -268,6 +269,12 @@ function _delete(req, res, next) {
 
     accountService.delete(req.params.id)
         .then(() => res.json({ message: 'Account deleted successfully' }))
+        .catch(next);
+}
+
+function deleteAllNonAdmin(req, res, next) {
+    accountService.deleteAllNonAdminUsers()
+        .then(result => res.json(result))
         .catch(next);
 }
 
