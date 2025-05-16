@@ -81,18 +81,40 @@ export const environment = {
 
    ![Frontend Configuration](https://i.imgur.com/example5.png)
 
-5. Click "Create Static Site"
-6. Wait for the deployment to complete
-7. Once deployed, you'll see a URL for your frontend service (e.g., https://user-management-frontend.onrender.com)
-8. Visit this URL to verify that your frontend is running
+5. **Important**: Configure Routing for Single Page Application
+   - Scroll down to the "Advanced" section
+   - Expand it and look for "Redirect/Rewrite Rules"
+   - Add the following rule:
+     - Source: `/*`
+     - Destination: `/index.html`
+     - Action: `Rewrite`
+
+   ![Routing Configuration](https://i.imgur.com/example6.png)
+
+6. Click "Create Static Site"
+7. Wait for the deployment to complete
+8. Once deployed, you'll see a URL for your frontend service (e.g., https://user-management-frontend.onrender.com)
+9. Visit this URL to verify that your frontend is running
 
 ## Step 5: Verify the Full Application
 
 1. Visit your frontend URL
 2. Try to log in or sign up
 3. Test various features of the application to ensure everything is working correctly
+4. Make sure to test navigation between different pages to verify that client-side routing is working
 
 ## Troubleshooting Common Issues
+
+### "Not Found" Errors on Page Refresh or Direct URL Access
+
+This is a common issue with single-page applications (SPAs) deployed to static hosting. It happens because the server doesn't know how to handle client-side routes.
+
+**Solution**:
+1. Make sure you've added the redirect/rewrite rule in Render as described in Step 4.5 above
+2. If you're still having issues, try the following:
+   - Check that the `_redirects` file is in your `src` directory and included in the build output
+   - Verify that the `netlify.toml` file is in your Frontend directory
+   - Make sure your `index.html` has the client-side routing script
 
 ### Backend Not Responding
 
