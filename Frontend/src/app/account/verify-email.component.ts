@@ -33,7 +33,13 @@ export class VerifyEmailComponent implements OnInit {
         private accountService: AccountService,
         private alertService: AlertService,
         private http: HttpClient
-    ) { }
+    ) {
+        // Clear any existing navigation
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParamsHandling: 'preserve'
+        });
+    }
 
     ngOnInit() {
         // Get token from URL
@@ -46,29 +52,22 @@ export class VerifyEmailComponent implements OnInit {
             return;
         }
 
-        // Try direct GET verification first
-        this.http.get(`${environment.apiUrl}/accounts/verify-email?token=${this.token}`)
+        // Try POST verification first
+        this.accountService.verifyEmail(this.token)
             .pipe(first())
             .subscribe({
                 next: () => {
                     this.emailStatus = EmailStatus.Success;
                     this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
-                    // Add a longer delay to ensure the verification is fully processed
-                    setTimeout(() => {
-                        this.router.navigate(['../login'], { relativeTo: this.route });
-                    }, 3000);
                 },
                 error: (error) => {
-                    // If GET fails, try POST method
-                    this.accountService.verifyEmail(this.token!)
+                    // If POST fails, try GET method
+                    this.http.get(`${environment.apiUrl}/accounts/verify-email?token=${this.token}`)
                         .pipe(first())
                         .subscribe({
                             next: () => {
                                 this.emailStatus = EmailStatus.Success;
                                 this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
-                                setTimeout(() => {
-                                    this.router.navigate(['../login'], { relativeTo: this.route });
-                                }, 3000);
                             },
                             error: (err) => {
                                 this.emailStatus = EmailStatus.Failed;
