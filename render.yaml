@@ -17,7 +17,7 @@ services:
       cd Frontend
       npm install
       npm run build
-    staticPublishPath: Frontend/dist/user-management-system
+    staticPublishPath: ./Frontend/dist/user-management-system
     routes:
       - type: rewrite
         source: /
