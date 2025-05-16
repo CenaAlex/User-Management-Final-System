@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: user-management-backend
+    env: node
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+  
+  - type: web
+    name: user-management-frontend
+    env: static
+    buildCommand: cd Frontend && npm install && npm run build
+    staticPublishPath: ./Frontend/dist/user-management-system
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache 
