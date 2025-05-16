@@ -19,9 +19,21 @@
                 <i class="fas fa-times-circle"></i>
                 <span class="ml-2">Verification failed</span>
                 <p class="mt-2" *ngIf="!token">No verification token found. Please use the link from your email.</p>
-                <p class="mt-2" *ngIf="token">The verification link may have expired or is invalid.</p>
+                <p class="mt-2" *ngIf="token">{{error}}</p>
             </div>
-            <button (click)="goToLogin()" class="btn btn-primary">Go to Login</button>
+            <div class="mt-3">
+                <button (click)="retryVerification()" *ngIf="token" class="btn btn-secondary mr-2">Retry Verification</button>
+                <button (click)="goToLogin()" class="btn btn-primary">Go to Login</button>
+            </div>
+            <div class="mt-3 text-muted">
+                <small>If you continue to have problems, please try:</small>
+                <ul class="text-left small">
+                    <li>Checking if you copied the complete verification link</li>
+                    <li>Clearing your browser cache and cookies</li>
+                    <li>Using a different browser</li>
+                    <li>Requesting a new verification email by registering again</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

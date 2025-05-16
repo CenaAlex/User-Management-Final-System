@@ -12,6 +12,7 @@ router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
+router.get('/verify-email', verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
@@ -104,9 +105,21 @@ function verifyEmailSchema(req, res, next) {
 }
 
 function verifyEmail(req, res, next) {
-    accountService.verifyEmail(req.body)
-        .then(() => res.json({ message: 'Verification successful, you can now login' }))
-        .catch(next);
+    // Get token from either query params (GET) or request body (POST)
+    const token = req.method === 'GET' ? req.query.token : req.body.token;
+    
+    if (!token) {
+        return res.status(400).json({ message: 'Verification token is required' });
+    }
+
+    accountService.verifyEmail({ token })
+        .then(() => {
+            res.json({ message: 'Verification successful, you can now login' });
+        })
+        .catch(error => {
+            console.error('Verification error:', error);
+            res.status(400).json({ message: 'Verification failed', error: error.toString() });
+        });
 }
 
 function validateResetTokenSchema(req, res, next) {
@@ -121,7 +134,6 @@ function validateResetToken(req, res, next) {
         .then(() => res.json({ message: 'Token is valid' }))
         .catch(next);
 }
-
 
 function forgotPasswordSchema(req, res, next) {
     const schema = Joi.object({
@@ -246,7 +258,6 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'Account deleted successfully' }))
         .catch(next);
 }
-
 
 // helper functions
 
