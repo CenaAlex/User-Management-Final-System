@@ -23,7 +23,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes),
+        RouterModule.forRoot(routes, { useHash: true }),
         HomeComponent // Import the standalone component used in routes
     ],
     exports: [RouterModule]

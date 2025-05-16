@@ -29,7 +29,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/_redirects",
-              "src/404.html"
+              "src/404.html",
+              "src/web.config"
             ],
             "styles": [
               "src/styles.less"
