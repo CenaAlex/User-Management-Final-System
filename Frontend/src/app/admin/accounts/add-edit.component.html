@@ -109,6 +109,10 @@
             <span *ngIf="submitting" class="spinner-border spinner-border-sm mr-1"></span>
             Save
         </button>
+        <button *ngIf="!isAddMode" type="button" [disabled]="deleting" (click)="onDelete()" class="btn btn-danger ml-2">
+            <span *ngIf="deleting" class="spinner-border spinner-border-sm mr-1"></span>
+            Delete Account
+        </button>
         <a routerLink="/admin/accounts" class="btn btn-link">Cancel</a>
     </div>
 </form>

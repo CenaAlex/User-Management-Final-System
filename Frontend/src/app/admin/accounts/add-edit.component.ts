@@ -25,6 +25,7 @@ export class AddEditComponent implements OnInit {
     submitting = false;
     submitted = false;
     originalStatus: string = 'Active';
+    deleting = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -137,5 +138,26 @@ export class AddEditComponent implements OnInit {
                     this.submitting = false;
                 }
             });
+    }
+
+    onDelete() {
+        if (!this.id) return;
+        
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete this account? This action cannot be undone.')) {
+            this.deleting = true;
+            this.accountService.delete(this.id)
+                .pipe(first())
+                .subscribe({
+                    next: () => {
+                        this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
+                        this.router.navigateByUrl('/admin/accounts');
+                    },
+                    error: error => {
+                        this.alertService.error(error);
+                        this.deleting = false;
+                    }
+                });
+        }
     }
 }
