@@ -29,6 +29,11 @@
               "src/favicon.ico",
               "src/assets",
               "src/_redirects",
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
               "src/404.html",
               "src/web.config",
               {
