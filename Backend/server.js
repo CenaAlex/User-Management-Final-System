@@ -16,7 +16,8 @@ app.use(cors({
     origin: (origin, callback) => {
         const allowedOrigins = [
             'http://localhost:4200',
-            'https://user-management-frontend.onrender.com'
+            'https://user-management-frontend.onrender.com',
+            'https://user-management-frontend-4dpx.onrender.com'
         ];
         
         // Allow requests with no origin (like mobile apps, curl requests)
