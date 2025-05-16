@@ -13,16 +13,34 @@ services:
   - type: web
     name: user-management-frontend
     env: static
-    buildCommand: cd Frontend && npm install && npm run build
-    staticPublishPath: ./Frontend/dist/user-management-system
+    buildCommand: |
+      cd Frontend
+      npm install
+      npm run build
+    staticPublishPath: Frontend/dist/user-management-system
     routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
+      - type: rewrite
+        source: /account/*
+        destination: /index.html
+      - type: rewrite
+        source: /admin/*
+        destination: /index.html
+      - type: rewrite
+        source: /profile/*
+        destination: /index.html
+      - type: rewrite
+        source: /requests/*
+        destination: /index.html
       - type: rewrite
         source: /*
         destination: /index.html
     headers:
       - path: /*
         name: Cache-Control
-        value: no-store, no-cache, must-revalidate, proxy-revalidate
+        value: no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0
       - path: /*
         name: X-Frame-Options
         value: DENY

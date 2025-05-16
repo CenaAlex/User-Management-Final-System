@@ -28,14 +28,16 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/_redirects",
               {
                 "glob": "_redirects",
                 "input": "src",
                 "output": "/"
               },
-              "src/404.html",
-              "src/web.config",
+              {
+                "glob": "web.config",
+                "input": "src",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "src/assets/",
