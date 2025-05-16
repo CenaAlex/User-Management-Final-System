@@ -33,17 +33,11 @@ export class VerifyEmailComponent implements OnInit {
         private accountService: AccountService,
         private alertService: AlertService,
         private http: HttpClient
-    ) {
-        // Clear any existing navigation
-        this.router.navigate([], {
-            relativeTo: this.route,
-            queryParamsHandling: 'preserve'
-        });
-    }
+    ) { }
 
     ngOnInit() {
-        // Get token from URL
-        this.token = this.route.snapshot.queryParams['token'];
+        // Get token from URL path parameter
+        this.token = this.route.snapshot.params['token'];
         
         if (!this.token) {
             this.emailStatus = EmailStatus.Failed;
@@ -52,37 +46,30 @@ export class VerifyEmailComponent implements OnInit {
             return;
         }
 
-        // Try POST verification first
+        // Verify email using POST method only
         this.accountService.verifyEmail(this.token)
             .pipe(first())
             .subscribe({
                 next: () => {
                     this.emailStatus = EmailStatus.Success;
                     this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
+                    // Automatically redirect to login after 2 seconds
+                    setTimeout(() => {
+                        this.router.navigate(['/account/login']);
+                    }, 2000);
                 },
                 error: (error) => {
-                    // If POST fails, try GET method
-                    this.http.get(`${environment.apiUrl}/accounts/verify-email?token=${this.token}`)
-                        .pipe(first())
-                        .subscribe({
-                            next: () => {
-                                this.emailStatus = EmailStatus.Success;
-                                this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
-                            },
-                            error: (err) => {
-                                this.emailStatus = EmailStatus.Failed;
-                                this.error = err.error?.message || err.message || 'Verification failed';
-                                this.alertService.error(this.error);
-                                console.error('Verification error:', err);
-                            }
-                        });
+                    this.emailStatus = EmailStatus.Failed;
+                    this.error = error?.error?.message || error?.message || 'Verification failed';
+                    this.alertService.error(this.error);
+                    console.error('Verification error:', error);
                 }
             });
     }
 
     // Method to manually navigate to login
     goToLogin() {
-        this.router.navigate(['../login'], { relativeTo: this.route });
+        this.router.navigate(['/account/login']);
     }
 
     // Method to retry verification
