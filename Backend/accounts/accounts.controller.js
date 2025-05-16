@@ -114,11 +114,23 @@ function verifyEmail(req, res, next) {
 
     accountService.verifyEmail({ token })
         .then(() => {
-            res.json({ message: 'Verification successful, you can now login' });
+            // If it's a GET request, redirect to the frontend login page with a success message
+            if (req.method === 'GET') {
+                const frontendUrl = process.env.FRONTEND_URL || 'https://user-management-frontend-4j6n.onrender.com';
+                res.redirect(`${frontendUrl}/account/login?verified=true`);
+            } else {
+                res.json({ message: 'Verification successful, you can now login' });
+            }
         })
         .catch(error => {
             console.error('Verification error:', error);
-            next(error);
+            // If it's a GET request, redirect to the frontend with an error message
+            if (req.method === 'GET') {
+                const frontendUrl = process.env.FRONTEND_URL || 'https://user-management-frontend-4j6n.onrender.com';
+                res.redirect(`${frontendUrl}/account/verify-email?error=${encodeURIComponent(error.message || 'Verification failed')}`);
+            } else {
+                next(error);
+            }
         });
 }
 

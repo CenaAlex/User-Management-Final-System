@@ -429,7 +429,10 @@ function basicDetails(account) {
 async function sendVerificationEmail(account, origin) {
     let message;
     if (origin) {
-        const verifyUrl = `${origin}/account/verify-email/${account.verificationToken}`;
+        // Use the deployed backend URL for direct verification
+        const backendUrl = process.env.API_URL || 'https://user-management-backend-4dpx.onrender.com';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://user-management-frontend-4j6n.onrender.com';
+        const verifyUrl = `${backendUrl}/accounts/verify-email/${account.verificationToken}`;
         message = `<p>Please click the below link to verify your email address:</p>
                    <p><a href="${verifyUrl}">${verifyUrl}</a></p>`;
     } else {
