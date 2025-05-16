@@ -17,26 +17,12 @@ services:
       cd Frontend
       npm install
       npm run build
-    staticPublishPath: ./Frontend/dist/user-management-system
+    staticPublishPath: dist/user-management-system
     routes:
-      - type: rewrite
-        source: /
-        destination: /index.html
-      - type: rewrite
-        source: /account/*
-        destination: /index.html
-      - type: rewrite
-        source: /admin/*
-        destination: /index.html
-      - type: rewrite
-        source: /profile/*
-        destination: /index.html
-      - type: rewrite
-        source: /requests/*
-        destination: /index.html
       - type: rewrite
         source: /*
         destination: /index.html
+        spa: true
     headers:
       - path: /*
         name: Cache-Control
