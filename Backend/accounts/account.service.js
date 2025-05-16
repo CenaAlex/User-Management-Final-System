@@ -202,7 +202,6 @@ async function create(params) {
 
     try {
         const account = new db.Account(params);
-        account.verified = Date.now();
 
         // hash password
         account.passwordHash = await hash(params.password);
@@ -211,29 +210,19 @@ async function create(params) {
         await account.save({ transaction });
 
         // Create employee record
-        const employee = await db.Employee.create({
+        await db.Employee.create({
             accountId: account.id,
-            position: 'New Employee', // Default position
+            position: params.position || 'Employee', // Default position if not specified
+            employeeId: null, // Will be auto-generated
             status: 'Active',
-            createdBy: params.createdBy || 1
-        }, { transaction });
-
-        // Create workflow record
-        await db.Workflow.create({
-            employeeId: employee.id,
-            type: 'AccountCreation',
-            description: `New account created for ${account.firstName} ${account.lastName}`,
-            status: 'Completed',
             createdBy: params.createdBy || 1,
             updatedBy: params.createdBy || 1
         }, { transaction });
 
-        // Commit transaction
         await transaction.commit();
 
         return basicDetails(account);
     } catch (error) {
-        // Rollback transaction
         await transaction.rollback();
         throw error;
     }
