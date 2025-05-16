@@ -7,7 +7,8 @@ import { AccountService, AlertService } from '@app/_services';
 
 enum EmailStatus {
     Verifying,
-    Failed
+    Failed,
+    Success
 }
 
 @Component({ 
@@ -39,11 +40,12 @@ export class VerifyEmailComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
+                    this.emailStatus = EmailStatus.Success;
                     this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
-                    // Add a small delay to ensure the verification is processed
+                    // Add a longer delay to ensure the verification is fully processed
                     setTimeout(() => {
                         this.router.navigate(['../login'], { relativeTo: this.route });
-                    }, 1000);
+                    }, 2000);
                 },
                 error: () => {
                     this.emailStatus = EmailStatus.Failed;
