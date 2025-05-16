@@ -31,8 +31,7 @@ export class VerifyEmailComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        private alertService: AlertService,
-        private http: HttpClient
+        private alertService: AlertService
     ) { }
 
     ngOnInit() {
@@ -46,13 +45,13 @@ export class VerifyEmailComponent implements OnInit {
             return;
         }
 
-        // Verify email using POST method only
+        // Verify email
         this.accountService.verifyEmail(this.token)
             .pipe(first())
             .subscribe({
-                next: () => {
+                next: (response: any) => {
                     this.emailStatus = EmailStatus.Success;
-                    this.alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
+                    this.alertService.success(response.message || 'Verification successful, you can now login', { keepAfterRouteChange: true });
                     // Automatically redirect to login after 2 seconds
                     setTimeout(() => {
                         this.router.navigate(['/account/login']);

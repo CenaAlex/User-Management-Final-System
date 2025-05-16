@@ -12,6 +12,7 @@ router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
+router.get('/verify-email/:token', verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
@@ -104,8 +105,8 @@ function verifyEmailSchema(req, res, next) {
 }
 
 function verifyEmail(req, res, next) {
-    // Get token from either query params (GET) or request body (POST)
-    const token = req.method === 'GET' ? req.query.token : req.body.token;
+    // Get token from URL params, request body, or query params
+    const token = req.params.token || req.body.token || req.query.token;
     
     if (!token) {
         return res.status(400).json({ message: 'Verification token is required' });
@@ -117,7 +118,7 @@ function verifyEmail(req, res, next) {
         })
         .catch(error => {
             console.error('Verification error:', error);
-            res.status(400).json({ message: 'Verification failed', error: error.toString() });
+            next(error);
         });
 }
 
