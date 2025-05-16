@@ -141,6 +141,8 @@ async function verifyEmail({ token }) {
     account.verified = Date.now();
     account.verificationToken = null;
     await account.save();
+
+    return { message: 'Verification successful' };
 }
 
 async function forgotPassword({ email }, origin) {
