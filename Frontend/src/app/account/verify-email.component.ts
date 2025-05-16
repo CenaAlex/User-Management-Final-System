@@ -22,6 +22,7 @@ enum EmailStatus {
 export class VerifyEmailComponent implements OnInit {
     EmailStatus = EmailStatus;
     emailStatus = EmailStatus.Verifying;
+    token: string | null = null;
 
     constructor(
         private route: ActivatedRoute,
@@ -31,12 +32,17 @@ export class VerifyEmailComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        const token = this.route.snapshot.queryParams['token'];
+        // Get token from URL
+        this.token = this.route.snapshot.queryParams['token'];
         
-        // remove token from url to prevent http referer leakage
-        this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
+        if (!this.token) {
+            this.emailStatus = EmailStatus.Failed;
+            this.alertService.error('Verification token is missing');
+            return;
+        }
 
-        this.accountService.verifyEmail(token)
+        // Verify the email
+        this.accountService.verifyEmail(this.token)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -45,11 +51,17 @@ export class VerifyEmailComponent implements OnInit {
                     // Add a longer delay to ensure the verification is fully processed
                     setTimeout(() => {
                         this.router.navigate(['../login'], { relativeTo: this.route });
-                    }, 2000);
+                    }, 3000);
                 },
-                error: () => {
+                error: (error) => {
                     this.emailStatus = EmailStatus.Failed;
+                    this.alertService.error('Verification failed: ' + (error.message || 'Please try again'));
                 }
             });
+    }
+
+    // Method to manually navigate to login
+    goToLogin() {
+        this.router.navigate(['../login'], { relativeTo: this.route });
     }
 }
