@@ -203,6 +203,10 @@ async function create(params) {
     try {
         const account = new db.Account(params);
 
+        // Set up verification
+        account.verificationToken = randomTokenString();
+        account.verified = null;
+
         // hash password
         account.passwordHash = await hash(params.password);
 
@@ -213,13 +217,15 @@ async function create(params) {
         await db.Employee.create({
             accountId: account.id,
             position: params.position || 'Employee', // Default position if not specified
-            employeeId: null, // Will be auto-generated
             status: 'Active',
             createdBy: params.createdBy || 1,
             updatedBy: params.createdBy || 1
         }, { transaction });
 
         await transaction.commit();
+
+        // Send verification email
+        await sendVerificationEmail(account, params.origin);
 
         return basicDetails(account);
     } catch (error) {
