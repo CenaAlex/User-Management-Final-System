@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
-    "build": "ng build --configuration production --base-href /",
+    "start": "ng serve",
+    "build": "ng build --configuration production",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
