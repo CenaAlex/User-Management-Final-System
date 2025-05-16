@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="./" />
+    <base href="/" />
     <title>User Management System</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,18 +50,31 @@
     
     <!-- Handle client-side routing for static hosting -->
     <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', function() {
+        // Show loading indicator immediately
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM fully loaded');
+            // Remove body visibility hidden
             document.body.style.visibility = 'visible';
         });
         
+        // Hide loading indicator when app is bootstrapped
         window.addEventListener('load', function() {
             console.log('All resources loaded');
+            var loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                setTimeout(function() {
+                    loadingIndicator.style.display = 'none';
+                }, 1000);
+            }
         });
 
         // Add error handling
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
+            var loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.innerHTML = '<p style="color: red;">Error loading application. Please check console for details.</p>';
+            }
             return false;
         };
 
@@ -70,7 +83,7 @@
         });
     </script>
 </head>
-<body style="visibility: hidden">
+<body>
     <div id="loading-indicator">
         <div class="spinner"></div>
         <p>Loading User Management System...</p>
