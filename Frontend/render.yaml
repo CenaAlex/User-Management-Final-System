@@ -3,7 +3,7 @@ services:
     name: user-management-frontend
     env: static
     buildCommand: cd Frontend && npm install && npm run build
-    staticPublishPath: /opt/render/project/src/Frontend/dist/user-management-system
+    staticPublishPath: Frontend/dist/user-management-system
     headers:
       - path: /*
         name: Cache-Control
