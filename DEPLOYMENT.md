@@ -1,14 +1,14 @@
-# Deployment Guide for User Management System
+# Deployment Guide for User Management System (Free Tier)
 
-This guide explains how to deploy the User Management System on Render.com.
+This guide explains how to deploy the User Management System on Render.com using the free tier.
 
 ## Prerequisites
 
 - A Render.com account
 - A GitHub account (for connecting your repository to Render)
-- Your MySQL database credentials
+- Your MySQL database credentials (already configured)
 
-## Backend Deployment Steps
+## Backend Deployment Steps (Free Tier)
 
 1. **Push your code to GitHub**
    - Create a new GitHub repository
@@ -21,9 +21,10 @@ This guide explains how to deploy the User Management System on Render.com.
    - Use the following settings:
      - **Name**: user-management-backend
      - **Environment**: Node
-     - **Build Command**: `cd Backend && npm install`
-     - **Start Command**: `cd Backend && npm start`
-     - **Plan**: Choose the appropriate plan (Free tier works for testing)
+     - **Root Directory**: Backend
+     - **Build Command**: `npm install`
+     - **Start Command**: `npm start`
+     - **Plan**: Free
 
 3. **Set Environment Variables**
    - In your Render dashboard, go to your web service
@@ -33,15 +34,16 @@ This guide explains how to deploy the User Management System on Render.com.
      - `PORT`: `10000`
 
 4. **Deploy the Service**
-   - Click on "Manual Deploy" and select "Deploy latest commit"
-   - Wait for the deployment to complete
+   - Click on "Create Web Service"
+   - Wait for the deployment to complete (this may take a few minutes)
 
 5. **Verify the Deployment**
    - Once deployed, click on the URL provided by Render
    - You should see a message: "User Management API is running"
    - Test the API endpoints using tools like Postman
+   - Note: Free tier services on Render will spin down after 15 minutes of inactivity. The first request after inactivity may take some time to respond.
 
-## Frontend Deployment Steps
+## Frontend Deployment Steps (Free Tier)
 
 1. **Create a new Static Site on Render**
    - Log in to your Render account
@@ -49,37 +51,34 @@ This guide explains how to deploy the User Management System on Render.com.
    - Connect your GitHub repository
    - Use the following settings:
      - **Name**: user-management-frontend
-     - **Build Command**: `cd Frontend && npm install && npm run build`
-     - **Publish Directory**: `Frontend/dist/user-management-system`
-     - **Plan**: Choose the appropriate plan (Free tier works for testing)
+     - **Root Directory**: Frontend
+     - **Build Command**: `npm install && npm run build`
+     - **Publish Directory**: `dist/user-management-system`
+     - **Plan**: Free
 
-2. **Set Environment Variables (if needed)**
-   - In your Render dashboard, go to your static site
-   - Click on "Environment" tab
-   - Add any necessary environment variables
-
-3. **Deploy the Static Site**
-   - Click on "Manual Deploy" and select "Deploy latest commit"
+2. **Deploy the Static Site**
+   - Click on "Create Static Site"
    - Wait for the deployment to complete
 
-4. **Verify the Frontend Deployment**
+3. **Verify the Frontend Deployment**
    - Once deployed, click on the URL provided by Render
    - You should see your User Management System frontend
    - Test the login and other features
 
-## Alternative: Using render.yaml for Deployment
+## Important Notes for Free Tier
 
-If you prefer to use the `render.yaml` file for deployment:
+1. **Backend Service Spin-down**:
+   - On the free tier, your backend service will spin down after 15 minutes of inactivity
+   - The first request after inactivity will take some time as the service spins up
+   - This is normal behavior for free tier services
 
-1. **Create a Blueprint on Render**
-   - Log in to your Render account
-   - Click on "New +" and select "Blueprint"
-   - Connect your GitHub repository
-   - Render will automatically detect the `render.yaml` file and create the services
+2. **Database Connection**:
+   - Your MySQL database is already configured in the config.json file
+   - Make sure your MySQL server allows connections from Render's IP addresses
 
-2. **Verify the Deployments**
-   - Once deployed, check both the backend and frontend URLs
-   - Test the application functionality
+3. **CORS Configuration**:
+   - The backend is configured to accept requests from the frontend domain
+   - You may need to update the allowed origins in server.js if your frontend URL is different
 
 ## Troubleshooting
 
@@ -94,9 +93,9 @@ If you prefer to use the `render.yaml` file for deployment:
   - Verify that the build and start commands are correct
 
 - **CORS Issues**:
-  - If you encounter CORS errors, ensure the backend is properly configured to allow requests from the frontend domain
-  - You may need to update the CORS configuration in the backend's server.js file
+  - If you encounter CORS errors, update the CORS configuration in server.js with your actual frontend URL
+  - The current configuration allows requests from 'https://user-management-frontend.onrender.com'
 
 - **Frontend-Backend Connection**:
   - Make sure the frontend's environment.prod.ts file has the correct backend URL
-  - Test the API endpoints directly to ensure they're accessible 
+  - Update the apiUrl in environment.prod.ts if your backend URL is different from 'https://user-management-backend.onrender.com' 

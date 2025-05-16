@@ -18,8 +18,14 @@ app.use(cors({
             'http://localhost:4200',
             'https://user-management-frontend.onrender.com'
         ];
+        
         // Allow requests with no origin (like mobile apps, curl requests)
         if (!origin) return callback(null, true);
+        
+        // Allow any Render.com domain
+        if (origin.endsWith('.onrender.com')) {
+            return callback(null, true);
+        }
         
         if (allowedOrigins.indexOf(origin) === -1) {
             const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
