@@ -12,8 +12,8 @@
         "host": "smtp.ethereal.email",
         "port": 587,
         "auth": {
-            "user": "wava.harris@ethereal.email",
-            "pass": "kRJ9E8wQBHp6NHwYfQ"
+            "user": "johan.schaefer@ethereal.email",
+            "pass": "m2rqvmVPCwTAjSmzV1"
         }
     }
 }
