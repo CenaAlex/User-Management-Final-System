@@ -1,23 +1,19 @@
 {
     "database": {
-        "host": "localhost",
+        "host": "153.92.15.31",
         "port": 3306,
-        "user": "root",
-        "password": "",
-        "database": "group_project_db"
+        "user": "u875409848_munasque",
+        "password": "9T2Z5$3UKkgSYzE",
+        "database": "u875409848_munasque"
     },
     "secret": "5f3c8d2e-9b7a-4f16-8e2d-1c6a9b3d4f5e",
-    "emailFrom": "info@signup-verification-api.com",
+    "emailFrom": "admin@tester.com",
     "smtpOptions": {
         "host": "smtp.ethereal.email",
         "port": 587,
         "auth": {
-            "user": "brendan84@ethereal.email",
-            "pass": "jMVUdREjQettNeVSDF",
-
-            "user": "johan.schaefer@ethereal.email",
-            "pass": "m2rqvmVPCwTAjSmzV1"
-            
+            "user": "wava.harris@ethereal.email",
+                "pass": "kRJ9E8wQBHp6NHwYfQ"
         }
     }
 }
